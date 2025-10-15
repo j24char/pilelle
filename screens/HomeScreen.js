@@ -1,0 +1,174 @@
+import React, { useState, useEffect, useLayoutEffect } from 'react';
+import { Alert, Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { supabase } from '../supabase';
+import { Ionicons } from '@expo/vector-icons';
+
+export default function HomeScreen({ navigation }) {
+  const [drug1, setDrug1] = useState('');
+  const [drug2, setDrug2] = useState('');
+  const [userIdShort, setUserIdShort] = useState('');
+
+  const mockCheckInteraction = async () => {
+    if (!drug1.trim() || !drug2.trim()) {
+      Alert.alert('Missing Input', 'Please enter values for both fields before continuing.');
+      return; // stop navigation
+    }
+    // Mock delay and fake result
+    const result = await new Promise((resolve) =>
+      setTimeout(
+        () =>
+          resolve({
+            risk: 'Moderate',
+            description: `Combining ${drug1} and ${drug2} may increase drowsiness.`,
+          }),
+        800
+      )
+    );
+    navigation.navigate('Result', { drug1, drug2, result });
+  };
+
+  const signOut = async () => {
+    await supabase.auth.signOut();
+  };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user?.id) {
+        // Take first 8 characters of user ID for display
+        setUserIdShort(user.id.substring(0, 8));
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  // useLayoutEffect(() => {
+  //   navigation.setOptions({
+  //     headerLeft: () => null, // hides the default back arrow
+  //   });
+  // }, [navigation]);
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: '', // Remove default title
+      headerLeft: () => (
+        <Image
+          source={require('../assets/logo.png')} // replace with your logo path
+          style={{ width: 40, height: 40, marginLeft: 16 }}
+          resizeMode="contain"
+        />
+      ),
+      headerRight: () => (
+        <Text style={{ marginRight: 16, fontWeight: 'bold', color: '#333' }}>
+          {userIdShort ? `User: ${userIdShort}` : ''}
+        </Text>
+      ),
+    });
+  }, [navigation, userIdShort]);
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Check Interactions</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="First Drug"
+        value={drug1}
+        onChangeText={setDrug1}
+      />
+      <Ionicons name="add-circle-outline" size={32} color="#36ada7" style={styles.icon} />
+      <TextInput
+        style={[styles.input, { marginBottom: 40 }]}
+        placeholder="Second Drug"
+        value={drug2}
+        onChangeText={setDrug2}
+      />
+
+      <Pressable 
+        style={({ pressed }) => [
+          styles.button,
+          pressed && styles.buttonPressed,
+        ]} 
+        onPress={mockCheckInteraction}
+        >
+        <Text style={styles.buttonText}>Check for Interactions</Text>
+      </Pressable>    
+      
+      <View style={{ marginTop: 10 }} />
+      <Pressable style={styles.button} onPress={() => navigation.navigate('History')}>
+        <Text style={styles.buttonText}>View History</Text>
+      </Pressable>
+        
+      <View style={{ marginTop: 10 }} />
+      <Pressable style={styles.signOutButton} onPress={signOut}>
+        <Text style={styles.signOutButtonText}>Sign Out</Text>
+      </Pressable>
+      
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'top',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    padding: 20,
+  },
+  title: {
+    fontSize: 22,
+    marginBottom: 20,
+    marginTop: 20,
+    color: '#45474C',
+  },
+  input: {
+    width: '80%',
+    borderWidth: 1,
+    borderColor: '#36ada7',
+    borderRadius: 10,
+    padding: 10,
+    marginVertical: 10,
+  },
+  button: {
+    backgroundColor: '#36ada7',  // soft desaturated blue
+    paddingVertical: 10,
+    paddingHorizontal: 24,
+    borderRadius: 20,
+    alignItems: 'center',
+    marginVertical: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+    width: '80%',
+  },
+  signOutButton: {
+    backgroundColor: '#b71c1c',  // red
+    paddingVertical: 10,
+    paddingHorizontal: 24,
+    borderRadius: 20,
+    alignItems: 'center',
+    marginVertical: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+    width: '80%',
+  },
+  buttonText: {
+    color: '#ffffff',
+    fontSize: 15,
+    fontWeight: '500',
+  },
+  signOutButtonText: {
+    color: 'white',
+    fontSize: 15,
+    fontWeight: '500',
+  },
+  buttonPressed: {
+    opacity: 0.7,
+  }
+});
