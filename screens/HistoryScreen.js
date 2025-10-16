@@ -11,7 +11,9 @@ export default function HistoryScreen({navigation}) {
     fetchHistory();
   }, []);
 
-  // useLayoutEffect to jump directly to home instead of returning to results
+  //------------------------------------------------------------------------------------------
+  // Function: useLayoutEffect
+  // Description:  Used to add navigation to return to home screen rather than previous screen
   useLayoutEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
@@ -31,6 +33,9 @@ export default function HistoryScreen({navigation}) {
     });
   }, [navigation]);
 
+  //------------------------------------------------------------------------------------------
+  // Function: fetchHistory
+  // Description:  Gets all the user's stored interaction history data
   const fetchHistory = async () => {
     const user = (await supabase.auth.getUser()).data.user;
     const { data, error } = await supabase
@@ -41,6 +46,9 @@ export default function HistoryScreen({navigation}) {
     if (!error) setHistory(data);
   };
 
+  //------------------------------------------------------------------------------------------
+  // Function: renderItem
+  // Description:  Displays one (indexed by item) of user's interaction history data entry
   const renderItem = ({ item }) => (
     <View style={styles.item}>
       <Text style={styles.drugs}>{item.drug1} + {item.drug2}</Text>
@@ -49,6 +57,9 @@ export default function HistoryScreen({navigation}) {
     </View>
   );
 
+  //------------------------------------------------------------------------------------------
+  // Function: handleClearData
+  // Description:  Clears all user's interaction history data
   const handleClearData = async () => {
     Alert.alert(
       'Clear History',
@@ -90,7 +101,7 @@ export default function HistoryScreen({navigation}) {
     );
   };
 
-
+  //------------------------------------------------------------------------------------------
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Interaction History</Text>

@@ -2,21 +2,19 @@ import React, { useState } from 'react';
 import { Alert, Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { supabase } from '../supabase';
 
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  //------------------------------------------------------------------------------------------
+  // Function: signIn
+  // Description:  Uses email/password to sign in
   const signIn = async () => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) Alert.alert('Login failed', error.message);
   };
 
-  const signUp = async () => {
-    const { error } = await supabase.auth.signUp({ email, password });
-    if (error) Alert.alert('Signup failed', error.message);
-    else Alert.alert('Check your email for verification');
-  };
-
+  //------------------------------------------------------------------------------------------
   return (
     <View style={styles.container}>
       <Image source={require('../assets/icon.png')} style={styles.image} />
@@ -42,8 +40,8 @@ export default function LoginScreen() {
         <Text style={styles.buttonText}>Sign In</Text>
       </Pressable>
       <View style={{ marginTop: 10 }} />
-      
-      <Pressable style={styles.button} onPress={signUp}>
+
+      <Pressable style={styles.button} onPress={() => navigation.navigate('SignUp')}>
         <Text style={styles.buttonText}>Sign Up</Text>
       </Pressable>
     </View>

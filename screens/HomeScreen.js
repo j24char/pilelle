@@ -7,6 +7,7 @@ export default function HomeScreen({ navigation }) {
   const [drug1, setDrug1] = useState('');
   const [drug2, setDrug2] = useState('');
   const [userIdShort, setUserIdShort] = useState('');
+  const [username, setUsername] = useState('');
 
   const mockCheckInteraction = async () => {
     if (!drug1.trim() || !drug2.trim()) {
@@ -32,43 +33,55 @@ export default function HomeScreen({ navigation }) {
   };
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+    const fetchUsername = async () => {
+      try {
+        const { data: userData, error: userError } = await supabase.auth.getUser();
+        if (userError) throw userError;
 
-      if (user?.id) {
-        // Take first 8 characters of user ID for display
-        setUserIdShort(user.id.substring(0, 8));
+        const user = userData?.user;
+        if (user?.id) {
+          // Fetch username from 'profiles' table
+          const { data: profile, error: profileError } = await supabase
+            .from('profiles')
+            .select('username')
+            .eq('id', user.id)
+            .single();
+
+          if (profileError) throw profileError;
+
+          setUsername(profile?.username || 'User');
+        }
+      } catch (error) {
+        console.error('Error fetching username:', error);
+        setUsername('User');
       }
     };
 
-    fetchUser();
+    fetchUsername();
   }, []);
 
-  // useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     headerLeft: () => null, // hides the default back arrow
-  //   });
-  // }, [navigation]);
+  //------------------------------------------------------------------------------------------
+  // Function: useLayoutEffect
+  // Description:  Used to add logo and username to navigation bar on home
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: '', // Remove default title
+      headerTitle: '',
       headerLeft: () => (
         <Image
-          source={require('../assets/logo.png')} // replace with your logo path
+          source={require('../assets/logo.png')}
           style={{ width: 40, height: 40, marginLeft: 16 }}
           resizeMode="contain"
         />
       ),
       headerRight: () => (
-        <Text style={{ marginRight: 16, fontWeight: 'bold', color: '#333' }}>
-          {userIdShort ? `User: ${userIdShort}` : ''}
+        <Text style={{ marginRight: 16, fontWeight: 'bold', color: '#36ada7' }}>
+          {username ? `@${username}` : ''}
         </Text>
       ),
     });
-  }, [navigation, userIdShort]);
+  }, [navigation, username]);
 
+  //------------------------------------------------------------------------------------------
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Check Interactions</Text>

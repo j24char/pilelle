@@ -94,6 +94,7 @@ export default function ResultScreen({ route, navigation }) {
     }
   };
 
+  //------------------------------------------------------------------------------------------
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Interaction Result</Text>
