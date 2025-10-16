@@ -4,6 +4,10 @@
 
 The app focuses on simplicity and speed, providing users with a history of their **last 10 interaction checks**. Future versions will leverage AI to provide more comprehensive insights and personalized guidance.
 
+<p align="center">
+  <img src="assets/icon.png" alt="Pilelle logo" width="120" />
+</p>
+
 ---
 
 ## Features
