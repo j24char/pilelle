@@ -15,6 +15,23 @@ export default function LoginScreen({ navigation }) {
   };
 
   //------------------------------------------------------------------------------------------
+  // Function: handleForgotPassword
+  // Description:  Sends the password reset email to the input email
+  const handleForgotPassword = async () => {
+    if (!email) {
+      Alert.alert('Missing email', 'Please enter your email address first.');
+      return;
+    }
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: 'https://pilelle.vercel.app/reset-password', // placeholder redirect URL
+    });
+
+    if (error) Alert.alert('Error', error.message);
+    else Alert.alert('Check your email', 'Password reset instructions have been sent.');
+  };
+
+  //------------------------------------------------------------------------------------------
   return (
     <View style={styles.container}>
       <Image source={require('../assets/icon.png')} style={styles.image} />
@@ -38,6 +55,11 @@ export default function LoginScreen({ navigation }) {
       
       <Pressable style={styles.button} onPress={signIn}>
         <Text style={styles.buttonText}>Sign In</Text>
+      </Pressable>
+      <Pressable onPress={handleForgotPassword}>
+        <Text style={{ marginTop: 12, color: '#36ada7', textAlign: 'center' }}>
+          Forgot your password?
+        </Text>
       </Pressable>
       <View style={{ marginTop: 10 }} />
 
