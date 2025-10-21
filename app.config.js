@@ -1,7 +1,7 @@
 export default {
   expo: {
-    name: "Pelile",
-    slug: "pelile",
+    name: "Pelille",
+    slug: "pelille",
     extra: {
       EXPO_PUBLIC_SUPABASE_ANON_KEY: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY,
     },
