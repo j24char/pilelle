@@ -7,7 +7,13 @@
     }
   ],
   "routes": [
-    { "src": "/_expo/(.*)", "dest": "/_expo/$1" },
-    { "src": "/(.*)", "dest": "/index.html" }
+    {
+      "src": "/(.*\\.(?:png|jpg|jpeg|gif|svg|ico|css|js|woff2?|ttf|otf))",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
   ]
 }
