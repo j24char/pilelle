@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { Alert, Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, Image, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { supabase } from '../supabase';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -31,6 +31,8 @@ export default function HomeScreen({ navigation }) {
   const signOut = async () => {
     await supabase.auth.signOut();
   };
+
+  const logoSource = Platform.OS === 'web' ? { uri: '/logo.png' } : require('../assets/logo.png');
 
   useEffect(() => {
     const fetchUsername = async () => {
@@ -68,7 +70,7 @@ export default function HomeScreen({ navigation }) {
       headerTitle: '',
       headerLeft: () => (
         <Image
-          source={require('../assets/logo.png')}
+          source={logoSource}
           style={{ width: 40, height: 40, marginLeft: 16 }}
           resizeMode="contain"
         />

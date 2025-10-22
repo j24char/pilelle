@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Alert, Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, Image, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { supabase } from '../supabase';
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const logoSource = Platform.OS === 'web' ? { uri: '/logo.png' } : require('../assets/logo.png');
 
   //------------------------------------------------------------------------------------------
   // Function: signIn
@@ -34,7 +36,7 @@ export default function LoginScreen({ navigation }) {
   //------------------------------------------------------------------------------------------
   return (
     <View style={styles.container}>
-      <Image source={require('../assets/icon.png')} style={styles.image} />
+      <Image source={logoSource} style={styles.image} />
       <Text style={styles.title}>PELILLE</Text>
       <Text>Email</Text>
       <TextInput
