@@ -3,12 +3,11 @@
     {
       "src": "package.json",
       "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
+      "config": { "distDir": "dist" }
     }
   ],
   "routes": [
+    { "src": "/_expo/(.*)", "dest": "/_expo/$1" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
