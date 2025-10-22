@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     marginVertical: 10,
+    maxWidth: 300,
   },
   button: {
     backgroundColor: '#36ada7',  // soft desaturated blue
@@ -157,6 +158,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
     width: '80%',
+    maxWidth: 300,
   },
   signOutButton: {
     backgroundColor: '#b71c1c',  // red
@@ -170,6 +172,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
     width: '80%',
+    maxWidth: 300,
   },
   buttonText: {
     color: '#ffffff',

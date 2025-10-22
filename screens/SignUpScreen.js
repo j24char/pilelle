@@ -138,6 +138,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
     width: '80%',
+    maxWidth: 300,
   },
   buttonText: {
     color: '#ffffff',
@@ -163,5 +164,6 @@ const styles = StyleSheet.create({
     padding: 10,
     marginVertical: 1,
     marginBottom: 10,
+    maxWidth: 300,
   },
 });

@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
     width: '80%',
+    maxWidth: 300,
   },
   buttonText: {
     color: '#ffffff',
@@ -114,5 +115,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     marginVertical: 2,
+    maxWidth: 300,
   },
 });
