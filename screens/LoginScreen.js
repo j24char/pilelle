@@ -6,7 +6,7 @@ export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const logoSource = Platform.OS === 'web' ? { uri: '/logo.png' } : require('../assets/logo.png');
+  const logoSource = Platform.OS === 'web' ? { uri: '/icon.png' } : require('../assets/icon.png');
 
   //------------------------------------------------------------------------------------------
   // Function: signIn

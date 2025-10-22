@@ -32,7 +32,7 @@ export default function HomeScreen({ navigation }) {
     await supabase.auth.signOut();
   };
 
-  const logoSource = Platform.OS === 'web' ? { uri: '/logo.png' } : require('../assets/logo.png');
+  const logoSource = Platform.OS === 'web' ? { uri: '/icon.png' } : require('../assets/icon.png');
 
   useEffect(() => {
     const fetchUsername = async () => {
