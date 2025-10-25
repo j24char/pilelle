@@ -2,30 +2,39 @@ import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { Alert, Image, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { supabase } from '../supabase';
 import { Ionicons } from '@expo/vector-icons';
+import { checkInteractions } from '../utils/checkInteraction.js';
 
 export default function HomeScreen({ navigation }) {
   const [drug1, setDrug1] = useState('');
   const [drug2, setDrug2] = useState('');
   const [userIdShort, setUserIdShort] = useState('');
   const [username, setUsername] = useState('');
+  const [results, setResults] = useState('');
 
   const mockCheckInteraction = async () => {
     if (!drug1.trim() || !drug2.trim()) {
       Alert.alert('Missing Input', 'Please enter values for both fields before continuing.');
       return; // stop navigation
     }
+
+    // Search data for interactions
+    console.log("Checking data...");
+    const found = await checkInteractions(drug1);
+    setResults(found);
+    console.log(found);
+
     // Mock delay and fake result
-    const result = await new Promise((resolve) =>
-      setTimeout(
-        () =>
-          resolve({
-            risk: 'Moderate',
-            description: `Combining ${drug1} and ${drug2} may increase drowsiness.`,
-          }),
-        800
-      )
-    );
-    navigation.navigate('Result', { drug1, drug2, result });
+    // const result = await new Promise((resolve) =>
+    //   setTimeout(
+    //     () =>
+    //       resolve({
+    //         risk: 'Moderate',
+    //         description: `Combining ${drug1} and ${drug2} may increase drowsiness.`,
+    //       }),
+    //     800
+    //   )
+    // );
+    navigation.navigate('Result', { drug1, drug2, results });
   };
 
   const signOut = async () => {

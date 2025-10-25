@@ -4,7 +4,7 @@ import { useLayoutEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function ResultScreen({ route, navigation }) {
-  const { drug1, drug2, result } = route.params;
+  const { drug1, drug2, results } = route.params;
 
   //------------------------------------------------------------------------------------------
   // Function: useLayoutEffect
@@ -50,8 +50,8 @@ export default function ResultScreen({ route, navigation }) {
           user_id: user.id,
           drug1,
           drug2,
-          result: result.risk,
-          description: result.description,
+          result: results.risk,
+          description: results.description,
           created_at: new Date(), // optional: ensure timestamps for ordering
         },
       ]);
@@ -95,12 +95,24 @@ export default function ResultScreen({ route, navigation }) {
   };
 
   //------------------------------------------------------------------------------------------
+  //<Text style={styles.text}>Risk Level: {result.risk}</Text>
+  //<Text style={styles.text}>Details: {result.description}</Text>
+      
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Interaction Result</Text>
       <Text style={styles.text}>Drugs: {drug1} + {drug2}</Text>
-      <Text style={styles.text}>Risk Level: {result.risk}</Text>
-      <Text style={styles.text}>Details: {result.description}</Text>
+      
+      {results.map((result, index) => (
+        <View key={index} style={styles.resultCard}>
+          <Text style={styles.text}>
+            Drug: {result.drug} — Food: {result.food}
+          </Text>
+          <Text style={styles.text}>Risk Level: {result.result}</Text>
+          <Text style={styles.text}>Details: {result.description}</Text>
+        </View>
+      ))}
+
       <View style={{ marginTop: 20 }} />
       
       <Pressable style={styles.button} onPress={saveResult}>
@@ -145,5 +157,19 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 15,
     fontWeight: '500',
+  },
+  resultCard: {
+    backgroundColor: '#f9f9f9',
+    padding: 12,
+    marginVertical: 6,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2,
+  },
+  text: {
+    fontSize: 16,
+    marginBottom: 4,
   },
 });
