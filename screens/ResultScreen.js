@@ -1,10 +1,39 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { FlatList, View, Text, Pressable, StyleSheet } from 'react-native';
 import { supabase } from '../supabase';
-import { useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function ResultScreen({ route, navigation }) {
-  const { drug1, drug2, results } = route.params;
+  const { results: initialResults = [], drug1, drug2 } = route.params || {};
+  const [results, setResults] = useState(initialResults);
+  const [loading, setLoading] = useState(false); // no need to start as true since data is passed
+
+  console.log('Route params:', route.params);
+  console.log('Initial results length:', initialResults?.length);
+
+  if (!Array.isArray(results) || results.length === 0) {
+    return (
+      <View style={styles.centered}>
+        <Text style={styles.text}>No interactions found.</Text>
+      </View>
+    );
+  }
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.text}>Loading results...</Text>
+      </View>
+    );
+  }
+
+  if (!Array.isArray(results) || results.length === 0) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.text}>Error loading data or no matches found.</Text>
+      </View>
+    );
+  }
 
   //------------------------------------------------------------------------------------------
   // Function: useLayoutEffect
@@ -95,23 +124,33 @@ export default function ResultScreen({ route, navigation }) {
   };
 
   //------------------------------------------------------------------------------------------
-  //<Text style={styles.text}>Risk Level: {result.risk}</Text>
-  //<Text style={styles.text}>Details: {result.description}</Text>
       
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Interaction Result</Text>
       <Text style={styles.text}>Drugs: {drug1} + {drug2}</Text>
-      
-      {results.map((result, index) => (
-        <View key={index} style={styles.resultCard}>
-          <Text style={styles.text}>
-            Drug: {result.drug} — Food: {result.food}
-          </Text>
-          <Text style={styles.text}>Risk Level: {result.result}</Text>
-          <Text style={styles.text}>Details: {result.description}</Text>
-        </View>
-      ))}
+
+      {Array.isArray(results) ? (
+        results.length > 0 ? (
+          <FlatList
+            data={results}
+            keyExtractor={(item, index) => index.toString()}
+            contentContainerStyle={styles.listContainer}
+            renderItem={({ item }) => (
+              <View style={styles.resultCard}>
+                <Text style={styles.title}>{item.drug} + {item.food}</Text>
+                <Text style={styles.text}>Risk: {item.result}</Text>
+                <Text style={styles.text}>Details: {item.description}</Text>
+              </View>
+            )}
+          />
+
+        ) : (
+          <Text style={styles.text}>No results found.</Text>
+        )
+      ) : (
+        <Text style={styles.text}>Error loading data.</Text>
+      )}
 
       <View style={{ marginTop: 20 }} />
       
@@ -171,5 +210,12 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     marginBottom: 4,
+  },
+  listContainer: {
+    paddingBottom: 150,
+    paddingHorizontal: 8,
+    backgroundColor: '#fafafa',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
   },
 });

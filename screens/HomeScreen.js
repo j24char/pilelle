@@ -22,7 +22,12 @@ export default function HomeScreen({ navigation }) {
     const found = await checkInteractions(drug1);
     setResults(found);
     console.log(found);
+    console.log('Found results type:', typeof found);
+    console.log('Found results:', found);
 
+    navigation.navigate('Result', { drug1, drug2, results: found });
+
+  };
     // Mock delay and fake result
     // const result = await new Promise((resolve) =>
     //   setTimeout(
@@ -34,8 +39,8 @@ export default function HomeScreen({ navigation }) {
     //     800
     //   )
     // );
-    navigation.navigate('Result', { drug1, drug2, results });
-  };
+    // navigation.navigate('Result', { drug1, drug2, found });
+  //};
 
   const signOut = async () => {
     await supabase.auth.signOut();
