@@ -15,12 +15,18 @@ export async function checkInteractions(searchText) {
     'reference',
   ];
 
-  const filterQuery = columns.map(col => `${col}.ilike.%${searchText}%`).join(',');
+  // const filterQuery = columns.map(col => `${col}.ilike.%${searchText}%`).join(',');
+
+  // const { data, error } = await supabase
+  //   .from('food_drug_interactions')
+  //   .select('*')
+  //   .or(filterQuery);
 
   const { data, error } = await supabase
-    .from('food_drug_interactions')
-    .select('*')
-    .or(filterQuery);
+  .from('food_drug_interactions')
+  .select('*')
+  .or(`drug_name.ilike.%${searchText}%,brand_name.ilike.%${searchText}%,food_herb_name.ilike.%${searchText}%`);
+
 
   if (error) {
     console.error('Supabase error:', error);
