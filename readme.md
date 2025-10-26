@@ -24,8 +24,25 @@ The app focuses on simplicity and speed, providing users with a history of their
 ## Screens
 
 1. **Home** – Enter two items to check for interactions.  
+<p align="center">
+  <img src="assets/Home.png" alt="Pilelle Home Screen" width="120" />
+</p>
 2. **Results** – Shows the interaction details and a summary.  
+<p align="center">
+  <img src="assets/Results.png" alt="Pilelle Results Screen" width="120" />
+</p>
 3. **History** – Displays your 10 most recent checks; allows clearing history.  
+<p align="center">
+  <img src="assets/History.png" alt="Pilelle History Screen" width="120" />
+</p>
+4. **Login** - Users sign back into the app.
+<p align="center">
+  <img src="assets/Login.png" alt="Pilelle Login Screen" width="120" />
+</p>
+5. **SignUp** - New users register for the app.
+<p align="center">
+  <img src="assets/SignUp.png" alt="Pilelle SignUp Screen" width="120" />
+</p>
 
 ---
 
